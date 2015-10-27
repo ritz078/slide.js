@@ -20,7 +20,8 @@
     var pluginName = 'SlideJS',
         defaults = {
             autoplay: false,
-            speed   : 500
+            speed: 500,
+            arrows : true
         };
 
     // The actual plugin constructor
@@ -39,10 +40,18 @@
     // Avoid Plugin.prototype conflicts
     $.extend(Plugin.prototype, {
         init: function() {
-            this.$element.addClass('slide-js-wrapper').find('ul').css('width', this.getWidth() + 'px').wrap('<div class="slide-js-list"></div>');
+            this.totalWidth = this.getWidth();
+            this.$element.addClass('slide-js-wrapper').find('ul').css('width', this.totalWidth + 'px').wrap('<div class="slide-js-list"></div>');
+            this.$ul = this.$element.find('ul');
             this.items = this.$element.find('li');
+
             this.$currentElement = $(this.items[0]);
-            this.listenToEvents();
+
+            if(this.settings.arrows){
+                this.listenToArrowEvents();
+                this.disableArrows();
+            }
+
         },
 
         /**
@@ -58,7 +67,6 @@
             _.$element.find('li').each(function() {
                 var width = parseInt($(this).outerWidth(true), 10);
                 totalWidth += width;
-                _.milestone.push(totalWidth);
             });
             return totalWidth;
         },
@@ -67,23 +75,32 @@
             var $currentTarget = $(e.currentTarget);
             if ($currentTarget.hasClass('next') && this.$currentElement.next().length) {
                 this.$currentElement = this.$currentElement.next();
-                this.moveToElement(this.$currentElement);
+                this.slideToElement(this.$currentElement);
             } else if ($currentTarget.hasClass('prev') && this.$currentElement.prev().length) {
                 this.$currentElement = this.$currentElement.prev();
-                this.moveToElement(this.$currentElement);
+                this.slideToElement(this.$currentElement);
             }
         },
 
-        moveToElement:function(elem){
-        	var _=this;
-        	 this.$element.find('.slide-js-list').stop().animate({
+        slideToElement: function(elem) {
+            var _ = this;
+            this.$element.find('.slide-js-list').stop().animate({
                 scrollLeft: elem.position().left
-            }, this.settings.speed, function(){
-            	!elem.position().left ? _.$arrowNav.find('prev').addClass('disabled') : _.$arrowNav.find('prev').removeClass('disabled');
+            }, this.settings.speed, function() {
+                _.disableArrows();
             });
         },
 
-        listenToEvents: function() {
+        disableArrows: function() {
+            this.$arrowNav.children().removeClass('disabled');
+            if (!this.$ul.position().left) {
+                this.$arrowNav.find('.prev').addClass('disabled');
+            } else if (((this.$ul.position().left - this.$element.width()) + this.totalWidth) === 0) {
+                this.$arrowNav.find('.next').addClass('disabled');
+            }
+        },
+
+        listenToArrowEvents: function() {
             var _ = this;
             this.$arrowNav = this.$element.find('.nav-arrow');
             this.$arrowNav.children().click(function(e) {
