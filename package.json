@@ -1,0 +1,46 @@
+{
+  "name": "slide-js",
+  "version": "0.0.0",
+  "description": "A jQuery plugin to slide HTML elements.",
+  "keywords": [
+    "jquery-plugin",
+    "jquery",
+    "slide",
+    "plugins",
+    "slider",
+    "slide-js"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jquery-boilerplate/slide.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jquery-boilerplate/slide.js/issues"
+  },
+  "author": {
+    "name": "Ritesh Kumar",
+    "email": "rkritesh078@gmail.com",
+    "url": "https://github.com/ritz078"
+  },
+  "homepage": "http://riteshkr.com/slide.js",
+  "license": "MIT",
+  "devDependencies": {
+    "commitizen": "^2.2.0",
+    "cz-conventional-changelog": "^1.1.2",
+    "grunt": "~0.4.5",
+    "grunt-cli": "~0.1.13",
+    "grunt-contrib-coffee": "^0.12.0",
+    "grunt-contrib-concat": "^0.5.1",
+    "grunt-contrib-jshint": "^0.11.0",
+    "grunt-contrib-uglify": "^0.8.0",
+    "grunt-contrib-watch": "^0.6.1"
+  },
+  "scripts": {
+    "test": "grunt travis --verbose"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-conventional-changelog"
+    }
+  }
+}

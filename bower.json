@@ -1,0 +1,19 @@
+{
+    "name": "slide-js",
+    "version": "0.0.0",
+    "homepage": "http://riteshkr.com/slide.js",
+    "authors": [
+        "Ritesh Kumar <rkritesh078@gmail.com>"
+    ],
+    "description": "A jQuery plugin to slide HTML elements.",
+    "main": "src/jquery.slide.js",
+    "keywords": [
+        "jquery-plugin",
+        "jquery",
+        "slide",
+        "plugins",
+        "slider",
+        "slide-js"
+    ],
+    "license": "MIT"
+}
