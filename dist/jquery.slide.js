@@ -45,7 +45,7 @@
             this.$ul = this.$element.find('ul');
             this.items = this.$element.find('li');
 
-            this.$currentElement = $(this.items[0]);
+            this.$currElem = $(this.items[0]);
 
             if(this.settings.arrows){
                 this.listenToArrowEvents();
@@ -71,17 +71,28 @@
             return totalWidth;
         },
 
+        /**
+         * Slide to the immediate next or the previous slide based on
+         * the click on the the arrow buttons
+         * @param  {object} e Event
+         * @return {}
+         */
         slideToNext: function(e) {
             var $currentTarget = $(e.currentTarget);
-            if ($currentTarget.hasClass('next') && this.$currentElement.next().length) {
-                this.$currentElement = this.$currentElement.next();
-                this.slideToElement(this.$currentElement);
-            } else if ($currentTarget.hasClass('prev') && this.$currentElement.prev().length) {
-                this.$currentElement = this.$currentElement.prev();
-                this.slideToElement(this.$currentElement);
+            if ($currentTarget.hasClass('next') && this.$currElem.next().length) {
+                this.$currElem = this.$currElem.next();
+                this.slideToElement(this.$currElem);
+            } else if ($currentTarget.hasClass('prev') && this.$currElem.prev().length) {
+                this.$currElem = this.$currElem.prev();
+                this.slideToElement(this.$currElem);
             }
         },
 
+        /**
+         * Slide to a particular element from any element position
+         * @param  {selector} elem The destination element
+         * @return {}
+         */
         slideToElement: function(elem) {
             var _ = this;
             this.$element.find('.slide-js-list').stop().animate({
@@ -100,6 +111,11 @@
             }
         },
 
+        /**
+         * Listen to the clicks on the arrows and take proper
+         * actions
+         * @return {null}
+         */
         listenToArrowEvents: function() {
             var _ = this;
             this.$arrowNav = this.$element.find('.nav-arrow');
