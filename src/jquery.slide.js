@@ -16,7 +16,7 @@
             arrows: true,
             firstElement: 1,
             dots: true,
-            loop: true
+            loop: false
         };
 
     // The actual plugin constructor
@@ -154,7 +154,10 @@
             });
         },
 
-
+        /**
+         * Listen to click on the dots and then go to the particular element.
+         * @return {null}
+         */
         listenToDotEvents: function() {
             var _ = this;
             _.$dots = _.$element.find('.nav-dot-section');
@@ -165,17 +168,29 @@
             });
         },
 
+        /**
+         * Adds dots to the map
+         * @return {null}
+         */
         initDots: function() {
             var $dots = '<div class="nav-dot-section">' + new Array(this.length + 1).join('<div class="nav-dot"></div>') + '</div>';
             this.$element.append($dots);
         },
 
+        /**
+         * Adds an index data attribute to each slider element.
+         */
         addIds: function() {
             this.items.each(function(index, val) {
                 $(val).attr('data-slide-index', index + 1);
             });
         },
 
+        /**
+         * Initializes the loop and adds a clone of the items before and after the
+         * original items.
+         * @return {null}
+         */
         loop: function() {
             this.content = this.$ul.html();
             this.items.clone().addClass('-after').insertAfter(this.items.filter(':last'));
@@ -183,22 +198,36 @@
             this.items = this.$ul.children();
         },
 
+        /**
+         * This function is helpful when the loop option is turned on.
+         * Whenever the active element reaches the boundary the element is
+         * shifted to the similar element in the boundary and also scrools the
+         * slider horizontally using `scrollLeft()`
+         * @return {null}
+         */
         processloop: function() {
-            var active = this.items.filter('.active');
-            var i,_=this;
-            if (_.$currElem.hasClass('-before')) {
-                active.removeClass('active');
-                i = active.prevAll().length;
-                active = _.$currElem = _.items.filter(':not(.-before):eq(' + i + ')').addClass('active');
-                _.$slider.scrollLeft(active.position().left);
-                _.currElemChanged = true;
-            } else if (_.$currElem.hasClass('-after')) {
-                active.removeClass('active');
-                i = active.prevAll('.-after').length;
-                active.removeClass('active');
-                _.$currElem = active = _.items.filter(':not(.-before):eq(' + i + ')').addClass('active');
-                _.$slider.scrollLeft(active.position().left);
-                _.currElemChanged = true;
+            if (this.settings.loop) {
+                var i, _ = this;
+                var active = _.items.filter('.active');
+
+                //When the element reaches the left boundary
+                if (_.$currElem.hasClass('-before')) {
+                    active.removeClass('active');
+                    i = active.prevAll().length;
+                    active = _.$currElem = _.items.filter(':not(.-before):eq(' + i + ')').addClass('active');
+                    _.$slider.scrollLeft(active.position().left);
+                    _.currElemChanged = true;
+                }
+
+                //when the element reaches the right boundary
+                else if (_.$currElem.hasClass('-after')) {
+                    active.removeClass('active');
+                    i = active.prevAll('.-after').length;
+                    active.removeClass('active');
+                    _.$currElem = active = _.items.filter(':not(.-before):eq(' + i + ')').addClass('active');
+                    _.$slider.scrollLeft(active.position().left);
+                    _.currElemChanged = true;
+                }
             }
         }
     });
