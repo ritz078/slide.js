@@ -1,6 +1,6 @@
 // the semi-colon before function invocation is a safety net against concatenated
 // scripts and/or other plugins which may not be closed properly.
-;(function($, window, document, undefined) {
+(function($, window, document, undefined) {
 
     'use strict';
 
@@ -11,10 +11,12 @@
     // Create the defaults once
     var pluginName = 'SlideJS',
         defaults = {
-            autoplay     : false,
-            speed        : 500,
-            arrows       : true,
-            firstElement : 1
+            autoplay: false,
+            speed: 200,
+            arrows: true,
+            firstElement: 1,
+            dots: true,
+            loop: true
         };
 
     // The actual plugin constructor
@@ -33,17 +35,30 @@
     // Avoid Plugin.prototype conflicts
     $.extend(Plugin.prototype, {
         init: function() {
-            this.totalWidth = this.getWidth();
-            this.$element.addClass('slide-js-wrapper').find('ul').css('width', this.totalWidth + 'px').wrap('<div class="slide-js-list"></div>');
+            this.totalWidth = !this.settings.loop ? this.getWidth() : this.getWidth() * 3;
             this.$ul = this.$element.find('ul');
             this.items = this.$element.find('li');
+            this.length = this.items.length;
 
             this.$currElem = $(this.items[0]);
-            this.slideToElement(this.$currElem);
 
-            if(this.settings.arrows){
+            this.addIds();
+            this.$element.addClass('slide-js-wrapper').find('ul').css('width', this.totalWidth + 'px').wrap('<div class="slide-js-list"></div>');
+
+            if (this.settings.loop) {
+                this.loop();
+            }
+            this.$slider = this.$element.find('.slide-js-list');
+            this.slideToElem(this.$currElem);
+
+            if (this.settings.arrows) {
                 this.listenToArrowEvents();
                 this.disableArrows();
+            }
+
+            if (this.settings.dots) {
+                this.initDots();
+                this.listenToDotEvents();
             }
 
         },
@@ -72,13 +87,14 @@
          * @return {}
          */
         slideToNext: function(e) {
-            var $currentTarget = $(e.currentTarget);
-            if ($currentTarget.hasClass('next') && this.$currElem.next().length) {
-                this.$currElem = this.$currElem.next();
-                this.slideToElement(this.$currElem);
-            } else if ($currentTarget.hasClass('prev') && this.$currElem.prev().length) {
-                this.$currElem = this.$currElem.prev();
-                this.slideToElement(this.$currElem);
+            var x = $(e.currentTarget);
+
+            if (x.hasClass('next') && $(this.$currElem).next().length) {
+                this.$currElem = $(this.$currElem).next();
+                this.slideToElem(this.$currElem);
+            } else if (x.hasClass('prev') && $(this.$currElem).prev().length) {
+                this.$currElem = $(this.$currElem).prev();
+                this.slideToElem(this.$currElem);
             }
         },
 
@@ -87,13 +103,32 @@
          * @param  {selector} elem The destination element
          * @return {}
          */
-        slideToElement: function(elem) {
+        slideToElem: function($elem) {
             var _ = this;
+            var left = $elem.position().left;
             this.$element.find('.slide-js-list').stop().animate({
-                scrollLeft: elem.position().left
+                scrollLeft: left
             }, this.settings.speed, function() {
                 _.disableArrows();
-                elem.addClass('active').siblings().removeClass('active');
+
+                $elem
+                    .addClass('active')
+                    .siblings()
+                    .removeClass('active');
+                if (_.$dots) {
+                    var index = $elem.data('slide-index') - 1;
+                    _.$dots
+                        .find('.nav-dot:eq(' + index + ')')
+                        .addClass('active')
+                        .siblings()
+                        .removeClass('active');
+                }
+                _.processloop();
+
+                if (!_.currElemChanged) {
+                    _.$currElem = $elem;
+                }
+                _.currElemChanged = false;
             });
         },
 
@@ -117,6 +152,54 @@
             this.$arrowNav.children().click(function(e) {
                 _.slideToNext(e);
             });
+        },
+
+
+        listenToDotEvents: function() {
+            var _ = this;
+            _.$dots = _.$element.find('.nav-dot-section');
+            _.$dotsChildren = _.$dots.children();
+            _.$dotsChildren.click(function(e) {
+                var index = $(e.currentTarget).index() + 1;
+                _.slideToElem(_.$ul.find('[data-slide-index="' + index + '"]'));
+            });
+        },
+
+        initDots: function() {
+            var $dots = '<div class="nav-dot-section">' + new Array(this.length + 1).join('<div class="nav-dot"></div>') + '</div>';
+            this.$element.append($dots);
+        },
+
+        addIds: function() {
+            this.items.each(function(index, val) {
+                $(val).attr('data-slide-index', index + 1);
+            });
+        },
+
+        loop: function() {
+            this.content = this.$ul.html();
+            this.items.clone().addClass('-after').insertAfter(this.items.filter(':last'));
+            this.items.filter(':first').before(this.items.clone().addClass('-before'));
+            this.items = this.$ul.children();
+        },
+
+        processloop: function() {
+            var active = this.items.filter('.active');
+            var i,_=this;
+            if (_.$currElem.hasClass('-before')) {
+                active.removeClass('active');
+                i = active.prevAll().length;
+                active = _.$currElem = _.items.filter(':not(.-before):eq(' + i + ')').addClass('active');
+                _.$slider.scrollLeft(active.position().left);
+                _.currElemChanged = true;
+            } else if (_.$currElem.hasClass('-after')) {
+                active.removeClass('active');
+                i = active.prevAll('.-after').length;
+                active.removeClass('active');
+                _.$currElem = active = _.items.filter(':not(.-before):eq(' + i + ')').addClass('active');
+                _.$slider.scrollLeft(active.position().left);
+                _.currElemChanged = true;
+            }
         }
     });
 

@@ -33,4 +33,23 @@
 			}
         }
     }
+    .nav-dot-section{
+        display: table;
+        margin: 0 auto;
+        z-index: 99;
+        position: relative;
+        top: -25px;
+        .nav-dot{
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #fff;
+            display: inline-block;
+            margin: 0 3px;
+            cursor: pointer;
+            &.active{
+                background-color: black;
+            }
+        }
+    }
 }

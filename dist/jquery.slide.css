@@ -26,3 +26,19 @@
         left: 10px; }
       .slide-js-wrapper .nav-arrow > div.next {
         right: 10px; }
+  .slide-js-wrapper .nav-dot-section {
+    display: table;
+    margin: 0 auto;
+    z-index: 99;
+    position: relative;
+    top: -25px; }
+    .slide-js-wrapper .nav-dot-section .nav-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #fff;
+      display: inline-block;
+      margin: 0 3px;
+      cursor: pointer; }
+      .slide-js-wrapper .nav-dot-section .nav-dot.active {
+        background-color: black; }
