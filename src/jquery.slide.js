@@ -11,9 +11,10 @@
     // Create the defaults once
     var pluginName = 'SlideJS',
         defaults = {
-            autoplay: false,
-            speed: 500,
-            arrows : true
+            autoplay     : false,
+            speed        : 500,
+            arrows       : true,
+            firstElement : 1
         };
 
     // The actual plugin constructor
@@ -38,6 +39,7 @@
             this.items = this.$element.find('li');
 
             this.$currElem = $(this.items[0]);
+            this.slideToElement(this.$currElem);
 
             if(this.settings.arrows){
                 this.listenToArrowEvents();
@@ -91,6 +93,7 @@
                 scrollLeft: elem.position().left
             }, this.settings.speed, function() {
                 _.disableArrows();
+                elem.addClass('active').siblings().removeClass('active');
             });
         },
 
