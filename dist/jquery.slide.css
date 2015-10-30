@@ -21,7 +21,8 @@
     top: 50%; }
     .slide-js-wrapper .nav-arrow > div {
       position: absolute;
-      cursor: pointer; }
+      cursor: pointer;
+      font-size: 28px; }
       .slide-js-wrapper .nav-arrow > div.prev {
         left: 10px; }
       .slide-js-wrapper .nav-arrow > div.next {

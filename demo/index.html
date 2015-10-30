@@ -5,9 +5,7 @@
     <title>slide.js</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../dist/jquery.slide.css">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script src="../src/jquery.slide.js"></script>
-</head>
+    </head>
 <style>
 *{
 	margin: 0;
@@ -69,11 +67,15 @@ li div{
             <div></div>
         </div>
         <div class="nav-arrow">
-        	<div class="prev"><i class="fa fa-arrow-left"></i></div>
-        	<div class="next"><i class="fa fa-arrow-right"></i></div>
+        	<div class="prev"><i class="fa fa-angle-left"></i></div>
+        	<div class="next"><i class="fa fa-angle-right"></i></div>
         </div>
     </div>
-    <script>
+
+</body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="../src/jquery.slide.js"></script>
+        <script>
     $(function() {
         $("#element").SlideJS({
             autoplay: true,
@@ -82,6 +84,5 @@ li div{
         });
     });
     </script>
-</body>
 
 </html>

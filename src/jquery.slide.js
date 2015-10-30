@@ -17,7 +17,8 @@
             firstElement: 1,
             dots: true,
             loop: false,
-            lazyLoad: false
+            lazyLoad: false,
+            pauseOnHover: true
         };
 
     // The actual plugin constructor
@@ -62,6 +63,10 @@
             }
             _.initElement(_.$currElem);
 
+            if (_.settings.autoplay) {
+                _.autoplay();
+            }
+
             _.lazyLoad();
 
         },
@@ -89,14 +94,14 @@
          * @param  {object} e Event
          * @return {}
          */
-        slideToNext: function(e) {
+        slideToNext: function(e, direction) {
             var x = $(e.currentTarget);
             var _ = this;
 
-            if (x.hasClass('next') && $(_.$currElem).next().length) {
+            if ((x.hasClass('next') || direction == 'right') && $(_.$currElem).next().length) {
                 _.$currElem = $(_.$currElem).next();
                 _.slideToElem(_.$currElem);
-            } else if (x.hasClass('prev') && $(_.$currElem).prev().length) {
+            } else if ((x.hasClass('prev') || direction == 'left') && $(_.$currElem).prev().length) {
                 _.$currElem = $(_.$currElem).prev();
                 _.slideToElem(_.$currElem);
             }
@@ -246,6 +251,11 @@
             }
         },
 
+        /**
+         * Lazyload functionality loads the image once the slide is in the view and
+         * its immediate siblings. The image is shown once the image is fully loaded.
+         * @return {null}
+         */
         lazyLoad: function() {
             var _ = this;
             if (_.settings.lazyLoad) {
@@ -271,6 +281,57 @@
                     };
                 });
             }
+        },
+
+        /**
+         * Autoplay initialization
+         * @return {null}
+         */
+        autoplay: function() {
+            var _ = this;
+            _.play();
+            if (_.settings.pauseOnHover) {
+                _.pauseOnHover();
+            }
+        },
+
+        /**
+         * Implementation of the pause on hover functionality
+         * @return {null}
+         */
+        pauseOnHover: function() {
+            var _ = this;
+            _.$element.hover(function() {
+                _.pause();
+            }, function() {
+                if (_.cleared) {
+                    _.play();
+                }
+            });
+        },
+
+        /**
+         * play the slideshow
+         * @return {null}
+         */
+        play: function() {
+            var _ = this;
+            _.timeout = setTimeout(function() {
+                var x = {};
+                x.currentTarget = _.$currElem;
+                _.slideToNext(x, 'right');
+                _.play();
+            }, 3000);
+            this.cleared = false;
+        },
+
+        /**
+         * pause the slideshow
+         * @return {null}
+         */
+        pause: function() {
+            clearTimeout(this.timeout);
+            this.cleared = true;
         }
     });
 
