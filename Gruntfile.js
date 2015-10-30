@@ -89,6 +89,5 @@ module.exports = function(grunt) {
 
     grunt.registerTask("build", ["concat", "uglify", "sass", "cssmin"]);
     grunt.registerTask("default", ["jshint", "build"]);
-    grunt.registerTask("travis", ["default"]);
 
 };
