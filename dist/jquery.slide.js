@@ -24,7 +24,8 @@
             arrows: true,
             firstElement: 1,
             dots: true,
-            loop: false
+            loop: false,
+            lazyLoad: false
         };
 
     // The actual plugin constructor
@@ -43,31 +44,33 @@
     // Avoid Plugin.prototype conflicts
     $.extend(Plugin.prototype, {
         init: function() {
-            this.totalWidth = !this.settings.loop ? this.getWidth() : this.getWidth() * 3;
-            this.$ul = this.$element.find('ul');
-            this.items = this.$element.find('li');
-            this.length = this.items.length;
+            var _ = this;
+            _.totalWidth = !_.settings.loop ? _.getWidth() : _.getWidth() * 3;
+            _.$ul = _.$element.find('ul');
+            _.items = _.$element.find('li');
+            _.length = _.items.length;
 
-            this.$currElem = $(this.items[0]);
+            _.$currElem = $(_.items[0]);
 
-            this.addIds();
-            this.$element.addClass('slide-js-wrapper').find('ul').css('width', this.totalWidth + 'px').wrap('<div class="slide-js-list"></div>');
+            _.addIds();
+            _.$element.addClass('slide-js-wrapper').find('ul').css('width', _.totalWidth + 'px').wrap('<div class="slide-js-list"></div>');
 
-            if (this.settings.loop) {
-                this.loop();
+            if (_.settings.loop) {
+                _.loop();
             }
-            this.$slider = this.$element.find('.slide-js-list');
-            this.slideToElem(this.$currElem);
+            _.$slider = _.$element.find('.slide-js-list');
+            _.slideToElem(_.$currElem);
 
-            if (this.settings.arrows) {
-                this.listenToArrowEvents();
-                this.disableArrows();
+            if (_.settings.arrows) {
+                _.listenToArrowEvents();
+                _.disableArrows();
             }
 
-            if (this.settings.dots) {
-                this.initDots();
-                this.listenToDotEvents();
+            if (_.settings.dots) {
+                _.initDots();
+                _.listenToDotEvents();
             }
+            _.lazyLoad();
 
         },
 
@@ -96,13 +99,14 @@
          */
         slideToNext: function(e) {
             var x = $(e.currentTarget);
+            var _ = this;
 
-            if (x.hasClass('next') && $(this.$currElem).next().length) {
-                this.$currElem = $(this.$currElem).next();
-                this.slideToElem(this.$currElem);
-            } else if (x.hasClass('prev') && $(this.$currElem).prev().length) {
-                this.$currElem = $(this.$currElem).prev();
-                this.slideToElem(this.$currElem);
+            if (x.hasClass('next') && $(_.$currElem).next().length) {
+                _.$currElem = $(_.$currElem).next();
+                _.slideToElem(_.$currElem);
+            } else if (x.hasClass('prev') && $(_.$currElem).prev().length) {
+                _.$currElem = $(_.$currElem).prev();
+                _.slideToElem(_.$currElem);
             }
         },
 
@@ -136,6 +140,7 @@
                 if (!_.currElemChanged) {
                     _.$currElem = $elem;
                 }
+                _.lazyLoad();
                 _.currElemChanged = false;
             });
         },
@@ -156,8 +161,8 @@
          */
         listenToArrowEvents: function() {
             var _ = this;
-            this.$arrowNav = this.$element.find('.nav-arrow');
-            this.$arrowNav.children().click(function(e) {
+            _.$arrowNav = _.$element.find('.nav-arrow');
+            _.$arrowNav.children().click(function(e) {
                 _.slideToNext(e);
             });
         },
@@ -200,10 +205,11 @@
          * @return {null}
          */
         loop: function() {
-            this.content = this.$ul.html();
-            this.items.clone().addClass('-after').insertAfter(this.items.filter(':last'));
-            this.items.filter(':first').before(this.items.clone().addClass('-before'));
-            this.items = this.$ul.children();
+            var _ = this;
+            _.content = _.$ul.html();
+            _.items.clone().addClass('-after').insertAfter(_.items.filter(':last'));
+            _.items.filter(':first').before(_.items.clone().addClass('-before'));
+            _.items = _.$ul.children();
         },
 
         /**
@@ -236,6 +242,29 @@
                     _.$slider.scrollLeft(active.position().left);
                     _.currElemChanged = true;
                 }
+            }
+        },
+
+        lazyLoad: function() {
+            var _ = this;
+            if (_.settings.lazyLoad) {
+                var leftImages = _.$currElem.prev().find('[data-slide-src]');
+                var centerImages = _.$currElem.find('[data-slide-src]');
+                var rightImages = _.$currElem.next().find('[data-slide-src]');
+                var images = $.merge(leftImages, centerImages);
+                images = $.merge(images, rightImages);
+                images.each(function() {
+                    var self = this;
+                    var image = new Image();
+                    image.src = $(this).data('slide-src');
+                    image.onload = function() {
+                        if ($(self).prop('tagName') == 'IMG') {
+                            $(self).attr('src', image.src).removeAttr('data-slide-src');
+                        } else {
+                            $(self).css('background-image', 'url(' + image.src + ')').removeAttr('data-slide-src');
+                        }
+                    };
+                });
             }
         }
     });

@@ -27,21 +27,47 @@ li {
 	position: absolute;
 	margin-top: -100px;
 }
+li div{
+    width: 100%;
+    background-size: cover;
+}
 
 </style>
 
 <body>
     <div id="element">
         <ul>
+            <li style="width:200px;">
+                <div data-slide-src="" style="height:100%"></div>
+            </li>
+            <li style="width:300px;">
+                <div data-slide-src="https://is1-3.housingcdn.com/4f2250e8/69220f6f0c6ca3e8cbe7308b52d3423d/v1/thumb.jpg" style="height:50%"></div>
+                <div data-slide-src="" style="height:50%"></div>
+            </li>
+            <li style="width:400px;">
+                <div data-slide-src="https://is1-3.housingcdn.com/4f2250e8/71d3b5d0351e4b75b85e359dc02240a2/v1/_logo.jpg" style="height:100%"></div>
+
+            </li>
+            <li style="width:100px;">
+                <div data-slide-src="https://is1-3.housingcdn.com/4f2250e8/25582695efd6a0b230857c5eb524b129/v1/_logo.jpg" style="height:100%"></div>
+            </li>
             <li style="width:200px;"></li>
-            <li style="width:300px;"></li>
-            <li style="width:400px;"></li>
-            <li style="width:100px;"></li>
             <li style="width:200px;"></li>
             <li style="width:200px;"></li>
-            <li style="width:200px;"></li>
-            <li style="width:200px;"></li>
+            <li style="width:200px;">
+                <div data-slide-src="https://is1-3.housingcdn.com/4f2250e8/25582695efd6a0b230857c5eb524b129/v1/_logo.jpg" style="height:100%"></div>
+            </li>
         </ul>
+        <div class="nav-dots">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
         <div class="nav-arrow">
         	<div class="prev"><i class="fa fa-arrow-left"></i></div>
         	<div class="next"><i class="fa fa-arrow-right"></i></div>
@@ -50,7 +76,9 @@ li {
     <script>
     $(function() {
         $("#element").SlideJS({
-            autoplay: true
+            autoplay: true,
+            lazyLoad: true,
+            loop:true
         });
     });
     </script>
