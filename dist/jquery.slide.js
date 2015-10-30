@@ -59,17 +59,17 @@
                 _.loop();
             }
             _.$slider = _.$element.find('.slide-js-list');
-            _.slideToElem(_.$currElem);
 
             if (_.settings.arrows) {
                 _.listenToArrowEvents();
                 _.disableArrows();
             }
-
             if (_.settings.dots) {
                 _.initDots();
                 _.listenToDotEvents();
             }
+            _.initElement(_.$currElem);
+
             _.lazyLoad();
 
         },
@@ -117,32 +117,41 @@
          */
         slideToElem: function($elem) {
             var _ = this;
-            var left = $elem.position().left;
             this.$element.find('.slide-js-list').stop().animate({
-                scrollLeft: left
+                scrollLeft: $elem.position().left
             }, this.settings.speed, function() {
-                _.disableArrows();
+                _.postSlide($elem);
+            });
+        },
 
-                $elem
+        postSlide: function($elem) {
+            var _ = this;
+            _.disableArrows();
+
+            $elem
+                .addClass('active')
+                .siblings()
+                .removeClass('active');
+            if (_.$dots) {
+                var index = $elem.data('slide-index') - 1;
+                _.$dots
+                    .find('.nav-dot:eq(' + index + ')')
                     .addClass('active')
                     .siblings()
                     .removeClass('active');
-                if (_.$dots) {
-                    var index = $elem.data('slide-index') - 1;
-                    _.$dots
-                        .find('.nav-dot:eq(' + index + ')')
-                        .addClass('active')
-                        .siblings()
-                        .removeClass('active');
-                }
-                _.processloop();
+            }
+            _.processloop();
 
-                if (!_.currElemChanged) {
-                    _.$currElem = $elem;
-                }
-                _.lazyLoad();
-                _.currElemChanged = false;
-            });
+            if (!_.currElemChanged) {
+                _.$currElem = $elem;
+            }
+            _.lazyLoad();
+            _.currElemChanged = false;
+        },
+
+        initElement: function($elem) {
+            this.$slider.scrollLeft($elem.position().left);
+            this.postSlide($elem);
         },
 
         disableArrows: function() {
@@ -177,7 +186,7 @@
             _.$dotsChildren = _.$dots.children();
             _.$dotsChildren.click(function(e) {
                 var index = $(e.currentTarget).index() + 1;
-                _.slideToElem(_.$ul.find('[data-slide-index="' + index + '"]'));
+                _.slideToElem(_.$ul.find('[data-slide-index="' + index + '"]').not('.-before,.-after'));
             });
         },
 
@@ -254,14 +263,18 @@
                 var images = $.merge(leftImages, centerImages);
                 images = $.merge(images, rightImages);
                 images.each(function() {
-                    var self = this;
                     var image = new Image();
                     image.src = $(this).data('slide-src');
                     image.onload = function() {
-                        if ($(self).prop('tagName') == 'IMG') {
-                            $(self).attr('src', image.src).removeAttr('data-slide-src');
-                        } else {
-                            $(self).css('background-image', 'url(' + image.src + ')').removeAttr('data-slide-src');
+                        var $similarElem = _.$ul.find('[data-slide-src = "' + image.src + '"]');
+                        if ($similarElem.length) {
+                            $similarElem.each(function() {
+                                if ($(this).prop('tagName') == 'IMG') {
+                                    $(this).attr('src', image.src).removeAttr('data-slide-src');
+                                } else {
+                                    $(this).css('background-image', 'url(' + image.src + ')').removeAttr('data-slide-src');
+                                }
+                            });
                         }
                     };
                 });
