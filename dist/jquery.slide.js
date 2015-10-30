@@ -20,7 +20,8 @@
     var pluginName = 'SlideJS',
         defaults = {
             autoplay: false,
-            speed: 200,
+            autoplaySpeed:3000,
+            transitionSpeed: 200,
             arrows: true,
             firstElement: 1,
             dots: true,
@@ -124,7 +125,7 @@
             var _ = this;
             this.$element.find('.slide-js-list').stop().animate({
                 scrollLeft: $elem.position().left
-            }, this.settings.speed, function() {
+            }, this.settings.transitionSpeed, function() {
                 _.postSlide($elem);
             });
         },
@@ -329,7 +330,7 @@
                 x.currentTarget = _.$currElem;
                 _.slideToNext(x, 'right');
                 _.play();
-            }, 3000);
+            }, _.settings.autoplaySpeed);
             this.cleared = false;
         },
 
