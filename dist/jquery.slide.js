@@ -359,6 +359,14 @@
                     _.slideToNext(x, 'right');
                 }
             });
+        },
+
+        destroy:function(){
+            $(window).off('keydown');
+            this.$element.off('hover');
+            this.$dotsChildren.off('click');
+            this.$arrowNav.children().off('click');
+            clearTimeout(this.timeout);
         }
     });
 
