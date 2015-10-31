@@ -5,55 +5,67 @@
     <title>slide.js</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="../dist/jquery.slide.css">
-    </head>
+</head>
 <style>
-*{
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
+
 li {
     background-color: green;
     border-right: 1px solid #fff;
 }
-#element{
-	width: 500px;
-	height: 300px;
-	margin: 0 auto;
+
+#element {
+    width: 500px;
+    height: 300px;
+    margin: 0 auto;
 }
-.nav-arrow{
-	position: absolute;
-	margin-top: -100px;
+
+.nav-arrow {
+    position: absolute;
+    margin-top: -100px;
 }
-li div{
+
+li div {
     width: 100%;
     background-size: cover;
 }
 
+i {
+    color: white;
+}
 </style>
 
 <body>
     <div id="element">
         <ul>
-            <li style="width:200px;">
-                <div data-slide-src="" style="height:100%"></div>
+            <li style="width:350px;">
+                <div style="height:100%;background-color:red;"></div>
             </li>
             <li style="width:300px;">
-                <div data-slide-src="https://is1-3.housingcdn.com/4f2250e8/69220f6f0c6ca3e8cbe7308b52d3423d/v1/thumb.jpg" style="height:50%"></div>
-                <div data-slide-src="" style="height:50%"></div>
+                <div style="height:50%;background-color:purple"></div>
+                <div style="height:50%;background-color:blue"></div>
             </li>
             <li style="width:400px;">
-                <div data-slide-src="https://is1-3.housingcdn.com/4f2250e8/71d3b5d0351e4b75b85e359dc02240a2/v1/_logo.jpg" style="height:100%"></div>
-
+                <div style="height:100%;background-color:green"></div>
             </li>
             <li style="width:100px;">
-                <div data-slide-src="https://is1-3.housingcdn.com/4f2250e8/25582695efd6a0b230857c5eb524b129/v1/_logo.jpg" style="height:100%"></div>
+                <div style="height:100%;background-color:pink"></div>
             </li>
-            <li style="width:200px;"></li>
-            <li style="width:200px;"></li>
-            <li style="width:200px;"></li>
+            <li style="width:250px;">
+                <div style="height:100%;background-color:red"></div>
+            </li>
+            <li style="width:300px;">
+                <div style="height:100%;background-color:grey"></div>
+            </li>
+            <li style="width:100px;">
+                <div style="height:100%;background-color:orange"></div>
+            </li>
             <li style="width:200px;">
-                <div data-slide-src="https://is1-3.housingcdn.com/4f2250e8/25582695efd6a0b230857c5eb524b129/v1/_logo.jpg" style="height:100%"></div>
+                <div style="height:100%;background-color:green"></div>
             </li>
         </ul>
         <div class="nav-dots">
@@ -67,22 +79,21 @@ li div{
             <div></div>
         </div>
         <div class="nav-arrow">
-        	<div class="prev"><i class="fa fa-angle-left"></i></div>
-        	<div class="next"><i class="fa fa-angle-right"></i></div>
+            <div class="prev"><i class="fa fa-angle-left"></i></div>
+            <div class="next"><i class="fa fa-angle-right"></i></div>
         </div>
     </div>
-
 </body>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script src="../src/jquery.slide.js"></script>
-        <script>
-    $(function() {
-        $("#element").SlideJS({
-            autoplay: true,
-            lazyLoad: true,
-            loop:true
-        });
+<script src="../src/jquery.slide.js"></script>
+<script>
+$(function() {
+    $("#element").SlideJS({
+        autoplay: true,
+        lazyLoad: true,
+        loop: true
     });
-    </script>
+});
+</script>
 
 </html>

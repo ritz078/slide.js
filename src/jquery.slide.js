@@ -12,14 +12,15 @@
     var pluginName = 'SlideJS',
         defaults = {
             autoplay: false,
-            autoplaySpeed:3000,
+            autoplaySpeed: 3000,
             transitionSpeed: 200,
             arrows: true,
             firstElement: 1,
             dots: true,
             loop: false,
             lazyLoad: false,
-            pauseOnHover: true
+            pauseOnHover: true,
+            keyboard: true
         };
 
     // The actual plugin constructor
@@ -69,6 +70,10 @@
             }
 
             _.lazyLoad();
+
+            if (_.settings.keyboard) {
+                _.keystrokes();
+            }
 
         },
 
@@ -333,6 +338,19 @@
         pause: function() {
             clearTimeout(this.timeout);
             this.cleared = true;
+        },
+
+        keystrokes: function() {
+            var _ = this;
+            var x = {};
+            x.currentTarget = _.$currElem;
+            $(window).keydown(function(e) {
+                if (e.keyCode === 37) {
+                    _.slideToNext(x, 'left');
+                } else if(e.keyCode === 39){
+                    _.slideToNext(x, 'right');
+                }
+            });
         }
     });
 
