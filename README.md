@@ -4,22 +4,22 @@
 
 
 
-![gif](demo/a.gif)
+![gif](demo/screen.gif)
 
 
 
 ### Features
 
 - around 3KB gzipped
-
+  
 - Keyboard navigation
-
+  
 - Lazy load of images
-
+  
 - Infinite loop
-
+  
 - Dot navigation
-
+  
   ​
 
 ### Installation
