@@ -182,7 +182,7 @@
         listenToArrowEvents: function() {
             var _ = this;
             _.$arrowNav = _.$element.find('.nav-arrow');
-            _.$arrowNav.children().click(function(e) {
+            _.$arrowNav.children().off('click').click(function(e) {
                 _.slideToNext(e);
             });
         },
@@ -195,7 +195,7 @@
             var _ = this;
             _.$dots = _.$element.find('.nav-dot-section');
             _.$dotsChildren = _.$dots.children();
-            _.$dotsChildren.click(function(e) {
+            _.$dotsChildren.off('click').click(function(e) {
                 var index = $(e.currentTarget).index() + 1;
                 _.slideToElem(_.$ul.find('[data-slide-index="' + index + '"]').not('.-before,.-after'));
             });
@@ -352,21 +352,13 @@
             var _ = this;
             var x = {};
             x.currentTarget = _.$currElem;
-            $(window).keydown(function(e) {
+            $(window).off('keydown').keydown(function(e) {
                 if (e.keyCode === 37) {
                     _.slideToNext(x, 'left');
                 } else if(e.keyCode === 39){
                     _.slideToNext(x, 'right');
                 }
             });
-        },
-
-        destroy:function(){
-            $(window).off('keydown');
-            this.$element.off('hover');
-            this.$dotsChildren.off('click');
-            this.$arrowNav.children().off('click');
-            clearTimeout(this.timeout);
         }
     });
 
