@@ -161,7 +161,7 @@
             this.$arrowNav.children().removeClass('disabled');
             if (!this.$ul.position().left) {
                 this.$arrowNav.find('.prev').addClass('disabled');
-            } else if (((this.$ul.position().left - this.$element.width()) + this.totalWidth) === 0) {
+            } else if (((this.$ul.position().left - this.$element.width()) + this.totalWidth) <= 0) {
                 this.$arrowNav.find('.next').addClass('disabled');
             }
         },
