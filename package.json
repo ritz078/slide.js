@@ -1,6 +1,6 @@
 {
   "name": "slide-js",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "A jQuery plugin to slide HTML elements.",
   "keywords": [
     "jquery-plugin",

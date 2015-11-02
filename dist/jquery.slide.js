@@ -1,5 +1,5 @@
 /*
- *  slide-js - v0.0.0
+ *  slide-js - v1.0.0
  *  A jQuery plugin to slide HTML elements.
  *  http://riteshkr.com/slide.js
  *
@@ -67,7 +67,7 @@
                 _.listenToArrowEvents();
                 _.disableArrows();
             }
-            if (_.settings.dots) {
+            if (_.settings.dots && _.length>1) {
                 _.initDots();
                 _.listenToDotEvents();
             }
