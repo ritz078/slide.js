@@ -144,6 +144,10 @@
         }
         _.lazyLoad();
         _.currElemChanged = false;
+
+        _.$element.trigger('slideChanged',{
+            curr:_.$currElem
+        });
     }
 
     SlideJS.prototype.initElement = function($elem) {
@@ -354,6 +358,16 @@
                 _.slideToNext(x, 'right');
             }
         });
+    }
+
+    SlideJS.prototype.destroy = function(){
+        var _ =this;
+        $(window).off('keydown');
+        _.$element.off('hover');
+        _.$dotsChildren.off('click');
+        _.$arrowNav.children().off('click');
+        _.$element.off('slideChanged');
+        _.pause()
     }
 
 window.SlideJS = SlideJS;
