@@ -11,15 +11,15 @@
 ### Features
 
 - around 3KB gzipped
-  
+
 - Keyboard navigation
-  
+
 - Lazy load of images
-  
+
 - Infinite loop
-  
+
 - Dot navigation
-  
+
   ​
 
 ### Installation
@@ -56,7 +56,8 @@ npm : `npm install --save slide-js`
 ### Advanced Options
 
 ``` javascript
-var slider = $('#element').SlideJS({
+var slider = new SlideJS({
+  element        : $('#element'),
   autoplay       	: false,
   autoplaySpeed  	: 3000,
   transitionSpeed	: 200,
@@ -83,6 +84,12 @@ For example
     </li>
   </ul>
 </div>
+```
+
+##Destroy
+
+```javascript
+slider.destroy()
 ```
 
 ## Contributing
