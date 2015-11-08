@@ -85,13 +85,14 @@ i {
     </div>
 </body>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-<script src="../dist/jquery.slide.min.js"></script>
+<script src="../src/jquery.slide.js"></script>
 <script>
 $(function() {
-    $("#element").SlideJS({
+    new SlideJS({
+        element:$("#element"),
         autoplay: true,
         lazyLoad: true,
-        loop: false
+        loop: true
     });
 });
 </script>

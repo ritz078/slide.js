@@ -9,5 +9,6 @@
 	"onevar": true,
 	"quotmark": "single",
 	"unused": true,
-	"node": true
+	"node": true,
+	"asi":true
 }
