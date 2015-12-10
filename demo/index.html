@@ -87,6 +87,10 @@ i {
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script src="../src/jquery.slide.js"></script>
 <script>
+$('#element').on('slideChanged', function(a, b){
+    console.log(a,b)
+})
+
     var x = new SlideJS({
         element:$("#element"),
         autoplay: true,
@@ -94,9 +98,6 @@ i {
         loop: true
     });
 
-$('#element').bind('slideChanged', function(a, b){
-    console.log(a,b)
-})
 </script>
 
 </html>

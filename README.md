@@ -57,16 +57,16 @@ npm : `npm install --save slide-js`
 
 ``` javascript
 var slider = new SlideJS({
-  element        : $('#element'),
-  autoplay       	: false,
-  autoplaySpeed  	: 3000,
-  transitionSpeed	: 200,
-  arrows			: true,
-  dots				: true,
-  loop				: false,
-  lazyLoad			: false,
-  pauseOnHover		: true,
-  keyboard			: true
+  element         : $('#element'),
+  autoplay        : false,
+  autoplaySpeed   : 3000,
+  transitionSpeed : 200,
+  arrows          : true,
+  dots            : true,
+  loop            : false,
+  lazyLoad        : false,
+  pauseOnHover    : true,
+  keyboard        : true
 })
 ```
 

@@ -1,5 +1,5 @@
 /*
- *  slide-js - v1.0.0
+ *  slide-js - v1.0.1
  *  A jQuery plugin to slide HTML elements.
  *  http://riteshkr.com/slide.js
  *
@@ -142,12 +142,13 @@
         if (!_.currElemChanged) {
             _.$currElem = $elem;
         }
+        _.$element.trigger('slideChanged', {
+            curr: _.$currElem
+        });
         _.lazyLoad();
         _.currElemChanged = false;
 
-        _.$element.trigger('slideChanged',{
-            curr:_.$currElem
-        });
+
     }
 
     SlideJS.prototype.initElement = function($elem) {
@@ -360,16 +361,23 @@
         });
     }
 
-    SlideJS.prototype.destroy = function(){
-        var _ =this;
+    SlideJS.prototype.destroy = function() {
+        var _ = this;
         $(window).off('keydown');
-        _.$element.off('hover');
-        _.$dotsChildren.off('click');
-        _.$arrowNav.children().off('click');
-        _.$element.off('slideChanged');
-        _.pause()
+        if (_.$element) {
+            _.$element.off('hover').off('slideChanged');
+        }
+        if (_.$dotsChildren) {
+            _.$dotsChildren.off('click');
+        }
+        if (_.$arrowNav) {
+            _.$arrowNav.children().off('click');
+        }
+        if (_.timeout) {
+            _.pause()
+        }
     }
 
-window.SlideJS = SlideJS;
+    window.SlideJS = SlideJS;
 
 })(jQuery, window, document)
