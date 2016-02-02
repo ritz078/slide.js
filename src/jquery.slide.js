@@ -49,7 +49,7 @@
         }
         _.initElement(_.$currElem);
 
-        if (_.settings.autoplay) {
+        if (_.settings.autoplay && _.length > 1) {
             _.autoplay();
         }
 
@@ -344,7 +344,7 @@
         var _ = this;
         var x = {};
         x.currentTarget = _.$currElem;
-        $(window).off('keydown').keydown(function(e) {
+        $(window).off('keydown.slidejs').on('keydown.slidejs',function(e) {
             if (e.keyCode === 37) {
                 _.slideToNext(x, 'left');
             } else if (e.keyCode === 39) {
@@ -355,7 +355,7 @@
 
     SlideJS.prototype.destroy = function() {
         var _ = this;
-        $(window).off('keydown');
+        $(window).off('keydown.slidejs');
         if (_.$element) {
             _.$element.off('hover').off('slideChanged');
         }
